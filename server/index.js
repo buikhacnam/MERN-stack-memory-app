@@ -5,10 +5,8 @@ import postRoutes from './routes/posts.js'
 
 const app = express()
 app.use(cors())
-app.use('/posts', postRoutes)
-
 app.use(express.json({ limit: '30mb' }))
-
+app.use('/posts', postRoutes)
 
 const CONNECTION_URL = `mongodb+srv://buinam:mrbui123456@cluster0.jntsz.mongodb.net/memories?retryWrites=true&w=majority`
 const PORT = process.env.PORT || 5000

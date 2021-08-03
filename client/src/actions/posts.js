@@ -22,3 +22,36 @@ export const createPost = (post) => {
 		}
 	}
 }
+
+export const updatePost = (id, post) => {
+	return async function (dispatch) {
+		try {
+			const {data} = await api.updatePost(id, post)
+			dispatch({ type: 'UPDATE', payload: data })
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}
+
+export const deletePost = (id) => {
+	return async function (dispatch) {
+		try {
+			await api.deletePost(id)
+			dispatch({type: 'DELETE', payload: id})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}
+
+export const likePost = (id) => {
+	return async function (dispatch) {
+		try {
+			const {data} = await api.likePost(id)
+			dispatch({ type: 'LIKE', payload: data})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}

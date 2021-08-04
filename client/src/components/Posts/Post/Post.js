@@ -24,8 +24,11 @@ export default function Post({ post, setCurrentId }) {
 			<Card className={classes.card}>
 				<CardMedia
 					className={classes.media}
-					image={post.selectedFile}
-					titile={post.titile}
+					image={
+						post.selectedFile ||
+						'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'
+					}
+					title={post.title}
 				/>
 				<div className={classes.overlay}>
 					<Typography variant='h6'>{post.creator}</Typography>
@@ -43,17 +46,27 @@ export default function Post({ post, setCurrentId }) {
 					</Button>
 				</div>
 				<div className={classes.details}>
-					<Typography variant='body2' color='textSecondary'>
-						{post.tags.map(tag => {
-							return `#${tag} `
-						})}
+					<Typography
+						variant='body2'
+						color='textSecondary'
+						component='h2'
+					>
+						{post.tags.map(tag => `#${tag} `)}
 					</Typography>
 				</div>
+				<Typography
+					className={classes.title}
+					gutterBottom
+					variant='h5'
+					component='h2'
+				>
+					{post.title}
+				</Typography>
 				<CardContent>
 					<Typography
-						className={classes.title}
-						variant='h5'
-						gutterBottom
+						variant='body2'
+						color='textSecondary'
+						component='p'
 					>
 						{post.message}
 					</Typography>
@@ -64,17 +77,15 @@ export default function Post({ post, setCurrentId }) {
 						color='primary'
 						onClick={() => dispatch(likePost(post._id))}
 					>
-						<ThumbUpAltIcon fontSize='small' />
-						Like
-						{post.likeCount}
+						<ThumbUpAltIcon fontSize='small' /> Like{' '}
+						{post.likeCount}{' '}
 					</Button>
 					<Button
 						size='small'
 						color='primary'
 						onClick={() => dispatch(deletePost(post._id))}
 					>
-						<DeleteIcon fontSize='small' />
-						Delete
+						<DeleteIcon fontSize='small' /> Delete
 					</Button>
 				</CardActions>
 			</Card>

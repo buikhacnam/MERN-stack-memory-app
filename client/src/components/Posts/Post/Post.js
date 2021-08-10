@@ -52,8 +52,11 @@ export default function Post({ post, setCurrentId }) {
 	}
 
 	return (
-		<div>
-			<Card className={classes.card}>
+		<div 
+			//style={{paddingLeft:'200px', paddingRight:'200px'}}
+			className={classes.styleDiv}
+		>
+			<Card className={classes.card} elevation={2}>
 				<CardMedia
 					className={classes.media}
 					image={

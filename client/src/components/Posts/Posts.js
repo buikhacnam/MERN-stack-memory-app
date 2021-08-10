@@ -20,8 +20,8 @@ export default function Posts({currentId, setCurrentId}) {
 				>
 					{posts.map(post => {
 						return (
-							<Grid key={post._id} item xs={12} sm={6}>
-								<Post post={post} setCurrentId={setCurrentId}/>
+							<Grid key={post._id} item xs={12} sm={12}>
+								<Post post={post} setCurrentId={setCurrentId} />
 							</Grid>
 						)
 					})}

@@ -3,9 +3,25 @@ import mongoose from 'mongoose'
 
 export const getPosts = async (req, res, next) => {
 	try {
-		const postMessages = await PostMessage.find()
+		const postMessages = await PostMessage.find().sort('-createdAt')
 		res.status(200).json(postMessages)
 	} catch (error) {
+		res.status(404).json({ message: error.message })
+	}
+}
+
+export const getPostsBySearch = async (req, res, next) => {
+	const { searchQuery, tags } = req.query
+
+	try {
+		const title = new RegExp(searchQuery, 'i')
+		console.log('title', title)
+		const posts = await PostMessage.find({
+			$or: [{ title }, { tags: { $in: tags.split(',') } }],
+		})
+		res.json({ data: posts })
+	} catch (error) {
+		console.log(error)
 		res.status(404).json({ message: error.message })
 	}
 }
@@ -30,18 +46,18 @@ export const createPost = async (req, res, next) => {
 export const updatePost = async (req, res) => {
 	const { id } = req.params
 	const { title, message, creator, selectedFile, tags } = req.body
-	
+
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`)
 
-	const post = await PostMessage.findById(id)	
-	
+	const post = await PostMessage.findById(id)
+
 	if (post.creator !== req.userId) {
 		return res.status(401).send('Unauthorized. Cannot delete!')
 	}
 
 	//const updatedPost = { creator, title, message, tags, selectedFile, _id: id }
-	
+
 	//await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true })
 
 	post.creator = creator
@@ -62,7 +78,7 @@ export const deletePost = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).send(`No post with id: ${id}`)
 	}
-	const post = await PostMessage.findById(id)	
+	const post = await PostMessage.findById(id)
 	if (post.creator !== req.userId) {
 		return res.status(401).send('Unauthorized. Cannot delete!')
 	}

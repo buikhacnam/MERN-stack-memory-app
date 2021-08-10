@@ -11,10 +11,10 @@ import {
 } from '../constants/actionTypes'
 
 //Action creators
-export const getPosts = () => {
+export const getPosts = (page) => {
 	return async dispatch => {
 		try {
-			const { data } = await api.fetchPosts()
+			const { data } = await api.fetchPosts(page)
 			dispatch({ type: FETCH_ALL, payload: data })
 		} catch (error) {
 			console.log(error.message)

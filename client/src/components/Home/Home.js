@@ -55,7 +55,7 @@ const Home = () => {
 		setTags(tags.filter(tag => tag !== chipToDelete))
 
 	useEffect(() => {
-		dispatch(getPosts())
+		dispatch(getPosts(page))
 	}, [dispatch])
 
 	return (

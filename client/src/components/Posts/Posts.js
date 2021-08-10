@@ -5,11 +5,11 @@ import useStyles from './styles'
 import { Grid, CircularProgress } from '@material-ui/core'
 
 export default function Posts({currentId, setCurrentId}) {
-	const posts = useSelector(state => state.posts)
+	const {posts} = useSelector(state => state.posts)
 	const classes = useStyles()
 	return (
 		<div>
-			{!posts.length ? (
+			{!posts?.length ? (
 				<CircularProgress />
 			) : (
 				<Grid

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useStyles from './styles'
-import { TextField, Button, Typography, Paper } from '@material-ui/core'
+import { TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core'
 import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
@@ -18,9 +18,8 @@ export default function Form({ currentId, setCurrentId }) {
 
 	const dispatch = useDispatch()
 
-	const post = useSelector(state =>
-		currentId ? state.posts.find(p => p._id === currentId) : null
-	)
+	const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null))
+	const {isLoading1} = useSelector(state => state.posts)
 
 	useEffect(() => {
 		if (post) setPostData(post)
@@ -66,6 +65,7 @@ export default function Form({ currentId, setCurrentId }) {
 				<Typography variant='h6'>
 					Creating a Memory
 				</Typography>
+				{isLoading1 && <CircularProgress size={20}/>}
 				<TextField
 					name='title'
 					variant='outlined'

@@ -7,17 +7,19 @@ import {
 	CardMedia,
 	Button,
 	Typography,
+	CircularProgress
 } from '@material-ui/core'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt'
 import DeleteIcon from '@material-ui/icons/Delete'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import moment from 'moment'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deletePost, likePost } from '../../../actions/posts'
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined'
 export default function Post({ post, setCurrentId }) {
 	const classes = useStyles()
 	const dispatch = useDispatch()
+	const {isLoading1} = useSelector(state => state.posts)
 	const user = JSON.parse(localStorage.getItem('profile'))
 
 	const Likes = () => {
@@ -53,7 +55,6 @@ export default function Post({ post, setCurrentId }) {
 
 	return (
 		<div 
-			//style={{paddingLeft:'200px', paddingRight:'200px'}}
 			className={classes.styleDiv}
 		>
 			<Card className={classes.card} elevation={2}>
@@ -124,8 +125,9 @@ export default function Post({ post, setCurrentId }) {
 							size='small'
 							color='secondary'
 							onClick={() => dispatch(deletePost(post._id))}
+							disabled={isLoading1}
 						>
-							<DeleteIcon fontSize='small' /> Delete
+							<DeleteIcon fontSize='small' /> Delete	
 						</Button>
 					)}
 				</CardActions>

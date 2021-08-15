@@ -9,11 +9,12 @@ import {
 	FETCH_BY_SEARCH,
 	END_LOADING,
 	START_LOADING_1,
-	END_LOADING_1
+	END_LOADING_1,
+	FETCH_POST,
 } from '../constants/actionTypes'
 
 //Action creators
-export const getPosts = (page) => {
+export const getPosts = page => {
 	return async dispatch => {
 		try {
 			dispatch({ type: START_LOADING })
@@ -23,6 +24,17 @@ export const getPosts = (page) => {
 		} catch (error) {
 			console.log(error.message)
 		}
+	}
+}
+
+export const getPost = id => async dispatch => {
+	try {
+		dispatch({ type: START_LOADING })
+		const { data } = await api.fetchPost(id)
+		dispatch({ type: FETCH_POST, payload: { post: data } })
+		dispatch({ type: END_LOADING })
+	} catch (error) {
+		console.log(error)
 	}
 }
 
@@ -43,13 +55,12 @@ export const getPostsBySearch = searchQuery => {
 	}
 }
 
-export const createPost = post => {
+export const createPost = (post, history) => {
 	return async dispatch => {
 		try {
-			dispatch({ type: START_LOADING_1 })
 			const { data } = await api.createPost(post)
+			history.push('/posts/' + data._id)
 			dispatch({ type: CREATE, payload: data })
-			dispatch({ type: END_LOADING_1 })
 		} catch (error) {
 			console.log(error)
 		}

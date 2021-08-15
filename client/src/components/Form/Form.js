@@ -4,6 +4,7 @@ import { TextField, Button, Typography, Paper, CircularProgress } from '@materia
 import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
+import { useHistory } from 'react-router'
 
 export default function Form({ currentId, setCurrentId }) {
 	const [postData, setPostData] = useState({
@@ -13,6 +14,7 @@ export default function Form({ currentId, setCurrentId }) {
 		selectedFile: '',
 	})
 
+	const history = useHistory()
 	const user = JSON.parse(localStorage.getItem('profile'))
 	const classes = useStyles()
 
@@ -31,7 +33,7 @@ export default function Form({ currentId, setCurrentId }) {
 		if (currentId) {
 			dispatch(updatePost(currentId, {...postData, name: user?.result?.name}))
 		} else {
-			dispatch(createPost({...postData, name: user?.result?.name}))
+			dispatch(createPost({...postData, name: user?.result?.name}, history))
 		}
 		clear()
 	}

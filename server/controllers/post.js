@@ -80,10 +80,6 @@ export const updatePost = async (req, res) => {
 		return res.status(401).send('Unauthorized. Cannot delete!')
 	}
 
-	//const updatedPost = { creator, title, message, tags, selectedFile, _id: id }
-
-	//await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true })
-
 	post.creator = creator
 	post.title = title
 	post.message = message
@@ -111,7 +107,6 @@ export const deletePost = async (req, res) => {
 }
 
 export const likePost = async (req, res) => {
-	console.log('like')
 	const { id } = req.params
 
 	if (!req.userId) {
@@ -138,4 +133,28 @@ export const likePost = async (req, res) => {
 	})
 
 	res.json(updatedPost)
+}
+
+
+
+export const commentPost = async (req, res) => {
+	console.log('comment')
+	const { id } = req.params
+	const { comment } = req.body
+
+	if (!req.userId) {
+		return res.status(401).send('Unauthorized')
+	}
+
+	if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`)
+
+	const post = await PostMessage.findById(id)
+
+	post.comments.push(comment)
+
+	const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new: true})
+
+	res.json(updatedPost)
+
+
 }

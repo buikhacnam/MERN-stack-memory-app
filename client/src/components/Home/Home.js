@@ -17,9 +17,13 @@ import ChipInput from 'material-ui-chip-input'
 import { getPosts, getPostsBySearch } from '../../actions/posts'
 import Posts from '../Posts/Posts'
 import Form from '../Form/Form'
+import FormUpdate from '../Form/FormUpdate'
+
 import Pagination from '../Pagination'
 import useStyles from './styles'
 import Tags from '../Tags/Tags'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search)
@@ -37,6 +41,15 @@ const Home = () => {
 	const [tags, setTags] = useState([])
 	const history = useHistory()
 
+	const [open, setOpen] = useState(false)
+
+	const handleClickOpen = () => {
+		setOpen(true)
+	}
+
+	const handleClose = () => {
+		setOpen(false)
+	}
 	const searchPost = () => {
 		if (search.trim() || tags) {
 			dispatch(getPostsBySearch({ search, tags: tags.join(',') }))
@@ -68,6 +81,19 @@ const Home = () => {
 	return (
 		<Grow in>
 			<Container maxWidth='xl'>
+				<Dialog
+					open={open}
+					onClose={handleClose}
+					aria-labelledby='form-dialog-title'
+				>
+					<DialogContent>
+						<FormUpdate
+							currentId={currentId}
+							setCurrentId={setCurrentId}
+							handleClose={handleClose}
+						/>
+					</DialogContent>
+				</Dialog>
 				<Grid
 					container
 					justify='space-between'
@@ -77,10 +103,10 @@ const Home = () => {
 				>
 					<Grid item xs={12} sm={6} md={9}>
 						<Form
-							currentId={currentId}
-							setCurrentId={setCurrentId}
+							// currentId={currentId}
+							// setCurrentId={setCurrentId}
 						/>
-						<Posts setCurrentId={setCurrentId} />
+						<Posts setCurrentId={setCurrentId} handleClose={handleClose} handleClickOpen={handleClickOpen}/>
 						{!searchQuery && !tags.length && (
 							<Paper className={classes.pagination}>
 								<Pagination page={page} />

@@ -11,6 +11,7 @@ import {
 import { useHistory } from 'react-router-dom'
 import { GoogleLogin } from 'react-google-login'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import Icon from './icon'
 import { signin, signup } from '../../actions/auth'
@@ -77,9 +78,7 @@ export default function Auth() {
 	return (
 		<Container component='main' maxWidth='xs'>
 			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
+				
 				<Typography component='h1' variant='h5'>
 					{isSignup ? 'Sign up' : 'Sign in'}
 				</Typography>
@@ -129,7 +128,7 @@ export default function Auth() {
 						type='submit'
 						fullWidth
 						variant='contained'
-						color='primary'
+						color='secondary'
 						className={classes.submit}
 					>
 						{isSignup ? 'Sign Up' : 'Sign In'}
@@ -140,7 +139,7 @@ export default function Auth() {
 						render={renderProps => (
 							<Button
 								className={classes.googleButton}
-								color='primary'
+								color='secondary'
 								fullWidth
 								onClick={renderProps.onClick}
 								disabled={renderProps.disabled}

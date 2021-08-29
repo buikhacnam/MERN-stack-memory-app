@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
 import { useHistory } from 'react-router'
 
-export default function Form({ currentId, setCurrentId, handleClose }) {
+export default function FormUpdate({ currentId, setCurrentId, handleClose }) {
 	const [postData, setPostData] = useState({
 		title: '',
 		message: '',
@@ -44,6 +44,8 @@ export default function Form({ currentId, setCurrentId, handleClose }) {
 			dispatch(
 				updatePost(currentId, { ...postData, name: user?.result?.name })
 			)
+            handleClose()
+
 		} else {
 			dispatch(
 				createPost({ ...postData, name: user?.result?.name }, history)
@@ -74,6 +76,7 @@ export default function Form({ currentId, setCurrentId, handleClose }) {
 
 	return (
 		<Paper className={classes.paper}>
+           
 			<form
 				autoComplete='off'
 				noValidate
@@ -84,7 +87,7 @@ export default function Form({ currentId, setCurrentId, handleClose }) {
 				<TextField
 					name='title'
 					variant='outlined'
-					label={`What's on your mind?`}
+					label={`Update the post`}
 					fullWidth
 					multiline
 					rows={3}
@@ -143,7 +146,7 @@ export default function Form({ currentId, setCurrentId, handleClose }) {
 						type='submit'
 						//fullWidth
 					>
-						Post
+						Update
 					</Button>
 				</div>
 				{/* <Button

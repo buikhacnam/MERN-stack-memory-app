@@ -22,7 +22,7 @@ import ChatIcon from '@material-ui/icons/Chat'
 import { getPost, likePost, deletePost } from '../../../actions/posts'
 import useStyles from './styles'
 
-const Post = ({ post, setCurrentId }) => {
+const Post = ({ post, setCurrentId, handleClose, handleClickOpen }) => {
 	const dispatch = useDispatch()
 	const classes = useStyles()
 	const user = JSON.parse(localStorage.getItem('profile'))
@@ -100,6 +100,7 @@ const Post = ({ post, setCurrentId }) => {
 							onClick={e => {
 								e.stopPropagation()
 								setCurrentId(post._id)
+								handleClickOpen()
 							}}
 							size='small'
 						>

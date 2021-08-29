@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-	AppBar,
-	Typography,
-	Toolbar,
-	Avatar,
-	Button,
-} from '@material-ui/core'
+import { AppBar, Typography, Toolbar, Avatar, Button } from '@material-ui/core'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import decode from 'jwt-decode'
@@ -15,7 +9,6 @@ import SearchIcon from '@material-ui/icons/Search'
 import IconButton from '@material-ui/core/IconButton'
 import Search from '../Search/Search'
 import InputBase from '@material-ui/core/InputBase'
-
 
 import Dialog from '@material-ui/core/Dialog'
 
@@ -34,8 +27,7 @@ const Navbar = () => {
 	}
 
 	const [open, setOpen] = React.useState(false)
-	const {isLoading}  = useSelector(state => state.posts)
-
+	const { isLoading } = useSelector(state => state.posts)
 
 	const handleOpen = () => {
 		setOpen(true)
@@ -57,20 +49,13 @@ const Navbar = () => {
 	}, [location])
 
 	useEffect(() => {
-		if(!isLoading && open) {
+		if (!isLoading && open) {
 			//handleClose()
 		}
 	}, [isLoading])
 
 	return (
 		<AppBar className={classes.appBar} position='static' color='inherit'>
-			<Dialog
-				onClose={handleClose}
-				aria-labelledby='simple-dialog-title'
-				open={open}
-			>
-				<Search />
-			</Dialog>
 			<div className={classes.brandContainer}>
 				<Typography
 					component={Link}
@@ -81,22 +66,13 @@ const Navbar = () => {
 				>
 					Moments Share
 				</Typography>
+
 				<div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            {/* <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            /> */}
-			<Search />
-			
-          </div>
-				{/* <img className={classes.image} src={memories} alt="icon" width="60" height='60' /> */}
+					<div className={classes.searchIcon}>
+						<SearchIcon />
+					</div>
+					<Search />
+				</div>
 			</div>
 			<Toolbar className={classes.toolbar}>
 				{user?.result ? (

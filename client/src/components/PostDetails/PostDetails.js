@@ -4,7 +4,7 @@ import {
 	Typography,
 	CircularProgress,
 	Divider,
-	Button
+	Button,
 } from '@material-ui/core/'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
@@ -14,7 +14,6 @@ import { getPost, getPostsBySearch, deletePost } from '../../actions/posts'
 import useStyles from './styles'
 import CommentSection from './CommentSection'
 import DeleteIcon from '@material-ui/icons/Delete'
-
 
 const Post = () => {
 	const user = JSON.parse(localStorage.getItem('profile'))
@@ -58,7 +57,6 @@ const Post = () => {
 	return (
 		<Paper style={{ padding: '20px', borderRadius: '15px' }}>
 			<div className={classes.card}>
-			
 				<div className={classes.imageSection}>
 					<img
 						className={classes.media}
@@ -91,27 +89,27 @@ const Post = () => {
 					<Typography variant='body1'>
 						{moment(post.createdAt).fromNow()}
 					</Typography>
-					<Divider style={{ margin: '20px 0' }} />
 					{(user?.result?.googleId === post?.creator ||
 						user?.result?._id === post?.creator) && (
 						<Button
-							size='small'
 							onClick={() => {
 								dispatch(deletePost(post._id))
 								history.push(`/posts/`)
 							}}
+							variant='contained'
+							style={{marginTop: '10px'}}
+							size='small'
 						>
 							<DeleteIcon fontSize='small' /> &nbsp; Delete
 						</Button>
 					)}
+					<Divider style={{ margin: '20px 0' }} />
+
 					<CommentSection post={post} />
 					<Divider style={{ margin: '20px 0' }} />
 				</div>
-
-				
 			</div>
-			
-			
+
 			{!!recommendedPosts.length && (
 				<div className={classes.section}>
 					<Typography gutterBottom variant='h5'>

@@ -76,7 +76,7 @@ export default function Auth() {
 
 	return (
 		<Container component='main' maxWidth='xs'>
-			<Paper className={classes.paper} elevation={3}>
+			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />
 				</Avatar>

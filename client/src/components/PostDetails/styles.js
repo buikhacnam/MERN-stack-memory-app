@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
 
   },
   card: {
-    display: 'flex',
+    // display: 'flex',
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap',

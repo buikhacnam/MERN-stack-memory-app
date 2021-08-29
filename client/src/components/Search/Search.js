@@ -7,30 +7,24 @@ import {
 	TextField,
 	Button,
 	Paper,
-	Typography,
-	Divider,
 } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import ChipInput from 'material-ui-chip-input'
+import InputBase from '@material-ui/core/InputBase'
+
 
 import { getPosts, getPostsBySearch } from '../../actions/posts'
-import Posts from '../Posts/Posts'
-import Form from '../Form/Form'
-import Pagination from '../Pagination'
+
 import useStyles from './styles'
-import Tags from '../Tags/Tags'
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search)
 }
-const Home = () => {
+const Search = () => {
 	const classes = useStyles()
 	const query = useQuery()
 	const page = query.get('page') || 1
-	const searchQuery = query.get('searchQuery')
-
-	const [currentId, setCurrentId] = useState(0)
 	const dispatch = useDispatch()
 
 	const [search, setSearch] = useState('')
@@ -66,40 +60,55 @@ const Home = () => {
 	}, [dispatch])
 
 	return (
-		<Grow in>
-			<Container maxWidth='xl'>
-				<Grid
-					container
-					justify='space-between'
-					alignItems='stretch'
-					spacing={3}
-					className={classes.gridContainer}
-				>
-					<Grid item xs={12} sm={6} md={9}>
-						<Form
-							currentId={currentId}
-							setCurrentId={setCurrentId}
-						/>
-						<Posts setCurrentId={setCurrentId} />
-						{!searchQuery && !tags.length && (
-							<Paper className={classes.pagination}>
-								<Pagination page={page} />
-							</Paper>
-						)}
-					</Grid>
-					<Grid item xs={12} sm={6} md={3} className={classes.tags}>
-						<div style={{ background: 'white', padding: '20px' }}>
-							<Typography variant='h6' align='center'>
-								Trending Now
-							</Typography>
-						</div>
-						<Divider variant='middle' />
-						<Tags />
-					</Grid>
-				</Grid>
-			</Container>
-		</Grow>
+		<InputBase
+			onKeyDown={handleKeyPress}
+			name='search'
+			//variant='outlined'
+			placeholder='Search posts...'
+			fullWidth
+			value={search}
+			onChange={e => setSearch(e.target.value)}
+			//style={{ width: '100%' }}
+			classes={{
+				root: classes.inputRoot,
+				input: classes.inputInput,
+			  }}
+			inputProps={{ 'aria-label': 'search' }}
+		/>
+	)
+
+	return (
+		<Paper className={classes.paper} color='inherit'>
+			<TextField
+				onKeyDown={handleKeyPress}
+				name='search'
+				variant='outlined'
+				label='type something'
+				fullWidth
+				value={search}
+				onChange={e => setSearch(e.target.value)}
+				style={{ width: '100%', marginBottom: '10px' }}
+			/>
+			{/* <ChipInput
+				style={{ margin: '10px 0', width: '100%' }}
+				value={tags}
+				onAdd={handleAddChip}
+				onDelete={handleDeleteChip}
+				label='Search Tags (press Enter)'
+				variant='outlined'
+                placeholder='Type in and press Enter'
+			/> */}
+			<Button
+				onClick={searchPost}
+				className={classes.searchButton}
+				variant='contained'
+				color='secondary'
+				style={{ width: '100%' }}
+			>
+				Search
+			</Button>
+		</Paper>
 	)
 }
 
-export default Home
+export default Search

@@ -11,7 +11,8 @@ import {
 	START_LOADING_1,
 	END_LOADING_1,
 	FETCH_POST,
-	COMMENT
+	COMMENT,
+	FETCH_BY_SEARCH_TAG
 } from '../constants/actionTypes'
 
 //Action creators
@@ -42,13 +43,29 @@ export const getPost = id => async dispatch => {
 export const getPostsBySearch = searchQuery => {
 	return async dispatch => {
 		try {
-			console.log('searchQuery', searchQuery)
 			dispatch({ type: START_LOADING })
 			const {
 				data: { data },
 			} = await api.fetchPostsBySearch(searchQuery)
 			console.log('data', data)
 			dispatch({ type: FETCH_BY_SEARCH, payload: { data } })
+			dispatch({ type: END_LOADING })
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}
+
+export const getPostsBySearchTag = searchQuery => {
+	return async dispatch => {
+		try {
+			console.log('searchTag', searchQuery)
+			dispatch({ type: START_LOADING })
+			const {
+				data: { data },
+			} = await api.fetchPostsBySearchTag(searchQuery)
+			console.log('data', data)
+			dispatch({ type: FETCH_BY_SEARCH_TAG, payload: { data } })
 			dispatch({ type: END_LOADING })
 		} catch (error) {
 			console.log(error)

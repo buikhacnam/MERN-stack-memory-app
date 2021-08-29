@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Typography, Toolbar, Avatar, Button } from '@material-ui/core'
+import {
+	AppBar,
+	Typography,
+	Toolbar,
+	Avatar,
+	Button,
+} from '@material-ui/core'
 import { Link, useHistory, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import decode from 'jwt-decode'
-import memories from '../../images/memories.png'
 import * as actionType from '../../constants/actionTypes'
 import useStyles from './styles'
+import SearchIcon from '@material-ui/icons/Search'
+import IconButton from '@material-ui/core/IconButton'
+import Search from '../Search/Search'
+import InputBase from '@material-ui/core/InputBase'
+
+
+import Dialog from '@material-ui/core/Dialog'
+
 const Navbar = () => {
 	const [user, setUser] = useState(
 		JSON.parse(localStorage.getItem('profile'))
@@ -20,34 +33,81 @@ const Navbar = () => {
 		setUser(null)
 	}
 
+	const [open, setOpen] = React.useState(false)
+	const {isLoading}  = useSelector(state => state.posts)
+
+
+	const handleOpen = () => {
+		setOpen(true)
+	}
+
+	const handleClose = () => {
+		setOpen(false)
+	}
+
 	useEffect(() => {
-		const token = user?.token;
-		  if (token) {
-			  const decoded = decode(token)
-			  if (decoded.exp * 1000 < new Date().getTime()) {
-				  logout()
-			  }
-		  }
-		setUser(JSON.parse(localStorage.getItem('profile')));
+		const token = user?.token
+		if (token) {
+			const decoded = decode(token)
+			if (decoded.exp * 1000 < new Date().getTime()) {
+				logout()
+			}
+		}
+		setUser(JSON.parse(localStorage.getItem('profile')))
 	}, [location])
+
+	useEffect(() => {
+		if(!isLoading && open) {
+			//handleClose()
+		}
+	}, [isLoading])
 
 	return (
 		<AppBar className={classes.appBar} position='static' color='inherit'>
+			<Dialog
+				onClose={handleClose}
+				aria-labelledby='simple-dialog-title'
+				open={open}
+			>
+				<Search />
+			</Dialog>
 			<div className={classes.brandContainer}>
 				<Typography
 					component={Link}
 					to='/'
 					className={classes.heading}
-					variant='h4'
+					variant='h6'
 					align='center'
 				>
-					Memories
+					Moments Share
 				</Typography>
+				<div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            {/* <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            /> */}
+			<Search />
+			
+          </div>
 				{/* <img className={classes.image} src={memories} alt="icon" width="60" height='60' /> */}
 			</div>
 			<Toolbar className={classes.toolbar}>
 				{user?.result ? (
 					<div className={classes.profile}>
+						{/* <IconButton
+							aria-label='search'
+							color='inherit'
+							onClick={handleOpen}
+						>
+							<SearchIcon />
+						</IconButton> */}
 						<Avatar
 							className={classes.purple}
 							alt={user?.result.name}
@@ -59,7 +119,7 @@ const Navbar = () => {
 							{user?.result.name}
 						</Typography>
 						<Button
-							variant='contained'
+							variant='outlined'
 							className={classes.logout}
 							color='secondary'
 							onClick={logout}
@@ -72,7 +132,7 @@ const Navbar = () => {
 						component={Link}
 						to='/auth'
 						variant='contained'
-						color='primary'
+						color='secondary'
 					>
 						Sign In
 					</Button>

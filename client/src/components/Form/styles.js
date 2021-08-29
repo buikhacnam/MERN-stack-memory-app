@@ -8,6 +8,8 @@ export default makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
+    marginBottom: '20px',
+    boxShadow: 'none',
   },
   form: {
     display: 'flex',
@@ -15,10 +17,21 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
   },
   fileInput: {
-    width: '97%',
+    width: '100%',
     margin: '10px 0',
+    marginBottom: '0',
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+			display: 'unset',
+		},
+
   },
   buttonSubmit: {
-    marginBottom: 10,
+    [theme.breakpoints.down('sm')]: {
+			float: 'right',
+      marginTop: '10px'
+		},
   },
 }));

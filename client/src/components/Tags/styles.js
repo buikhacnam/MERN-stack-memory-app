@@ -40,6 +40,9 @@ export default makeStyles((theme) => ({
     marginBottom: 10,
   },
   tags: {
-   
+    background: '#ffffff',
+    maxHeight: '500px',
+    overflow: 'auto',
+    padding: '10px',
   }
 }));

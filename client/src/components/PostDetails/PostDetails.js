@@ -4,16 +4,21 @@ import {
 	Typography,
 	CircularProgress,
 	Divider,
+	Button
 } from '@material-ui/core/'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import { useParams, useHistory } from 'react-router-dom'
 
-import { getPost, getPostsBySearch } from '../../actions/posts'
+import { getPost, getPostsBySearch, deletePost } from '../../actions/posts'
 import useStyles from './styles'
 import CommentSection from './CommentSection'
+import DeleteIcon from '@material-ui/icons/Delete'
+
 
 const Post = () => {
+	const user = JSON.parse(localStorage.getItem('profile'))
+
 	const { post, posts, isLoading } = useSelector(state => state.posts)
 	const dispatch = useDispatch()
 	const history = useHistory()
@@ -42,7 +47,7 @@ const Post = () => {
 
 	if (isLoading) {
 		return (
-			<Paper elevation={6} className={classes.loadingPaper}>
+			<Paper className={classes.loadingPaper}>
 				<CircularProgress size='7em' />
 			</Paper>
 		)
@@ -51,34 +56,9 @@ const Post = () => {
 	const recommendedPosts = posts.filter(({ _id }) => _id !== post._id)
 
 	return (
-		<Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
+		<Paper style={{ padding: '20px', borderRadius: '15px' }}>
 			<div className={classes.card}>
-				<div className={classes.section}>
-					<Typography variant='h3' component='h2'>
-						{post.title}
-					</Typography>
-					<Typography
-						gutterBottom
-						variant='h6'
-						color='textSecondary'
-						component='h2'
-					>
-						{post.tags.map(tag => `#${tag} `)}
-					</Typography>
-					<Typography gutterBottom variant='body1' component='p'>
-						{post.message}
-					</Typography>
-					<Typography variant='h6'>
-						Created by: {post.name}
-					</Typography>
-					<Typography variant='body1'>
-						{moment(post.createdAt).fromNow()}
-					</Typography>
-					<Divider style={{ margin: '20px 0' }} />
-					<Divider style={{ margin: '20px 0' }} />
-					<CommentSection post={post} />
-					<Divider style={{ margin: '20px 0' }} />
-				</div>
+			
 				<div className={classes.imageSection}>
 					<img
 						className={classes.media}
@@ -89,7 +69,49 @@ const Post = () => {
 						alt={post.title}
 					/>
 				</div>
+
+				<div className={classes.section}>
+					{/* <Typography variant='h3' component='h2'>
+						{post.title}
+					</Typography> */}
+					<Typography
+						gutterBottom
+						variant='h6'
+						color='textSecondary'
+						component='h2'
+					>
+						{post.tags.map(tag => `#${tag} `)}
+					</Typography>
+					<Typography gutterBottom variant='body1' component='p'>
+						{post.title}
+					</Typography>
+					<Typography variant='h6'>
+						Created by: {post.name}
+					</Typography>
+					<Typography variant='body1'>
+						{moment(post.createdAt).fromNow()}
+					</Typography>
+					<Divider style={{ margin: '20px 0' }} />
+					{(user?.result?.googleId === post?.creator ||
+						user?.result?._id === post?.creator) && (
+						<Button
+							size='small'
+							onClick={() => {
+								dispatch(deletePost(post._id))
+								history.push(`/posts/`)
+							}}
+						>
+							<DeleteIcon fontSize='small' /> &nbsp; Delete
+						</Button>
+					)}
+					<CommentSection post={post} />
+					<Divider style={{ margin: '20px 0' }} />
+				</div>
+
+				
 			</div>
+			
+			
 			{!!recommendedPosts.length && (
 				<div className={classes.section}>
 					<Typography gutterBottom variant='h5'>

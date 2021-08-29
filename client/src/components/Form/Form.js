@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import useStyles from './styles'
-import { TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core'
+import {
+	TextField,
+	Button,
+	Typography,
+	Paper,
+	CircularProgress,
+} from '@material-ui/core'
 import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
@@ -20,8 +26,12 @@ export default function Form({ currentId, setCurrentId }) {
 
 	const dispatch = useDispatch()
 
-	const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null))
-	const {isLoading1} = useSelector(state => state.posts)
+	const post = useSelector(state =>
+		currentId
+			? state.posts.posts.find(message => message._id === currentId)
+			: null
+	)
+	const { isLoading1 } = useSelector(state => state.posts)
 
 	useEffect(() => {
 		if (post) setPostData(post)
@@ -31,9 +41,13 @@ export default function Form({ currentId, setCurrentId }) {
 		e.preventDefault()
 
 		if (currentId) {
-			dispatch(updatePost(currentId, {...postData, name: user?.result?.name}))
+			dispatch(
+				updatePost(currentId, { ...postData, name: user?.result?.name })
+			)
 		} else {
-			dispatch(createPost({...postData, name: user?.result?.name}, history))
+			dispatch(
+				createPost({ ...postData, name: user?.result?.name }, history)
+			)
 		}
 		clear()
 	}
@@ -48,37 +62,38 @@ export default function Form({ currentId, setCurrentId }) {
 		})
 	}
 
-	if(!user?.result?.name) {
-		return <Paper className={classes.paper}>
-			<Typography variant="h6" align='center'>
-				Please login to post
-			</Typography>
-		</Paper>
+	if (!user?.result?.name) {
+		return (
+			<Paper className={classes.paper}>
+				<Typography variant='h6' align='center'>
+					Please login to post
+				</Typography>
+			</Paper>
+		)
 	}
 
 	return (
-		<Paper className={classes.paper} elevation={6}>
+		<Paper className={classes.paper}>
 			<form
 				autoComplete='off'
 				noValidate
 				className={`${classes.root} ${classes.form}`}
 				onSubmit={handleSubmit}
 			>
-				<Typography variant='h6'>
-					Creating a Memory
-				</Typography>
-				{isLoading1 && <CircularProgress size={20}/>}
+				{/* <Typography variant='h6'>What's on your mind?</Typography> */}
 				<TextField
 					name='title'
 					variant='outlined'
-					label='Title'
+					label={`What's on your mind?`}
 					fullWidth
+					multiline
+					rows={3}
 					value={postData.title}
 					onChange={e =>
 						setPostData({ ...postData, title: e.target.value })
 					}
 				/>
-				<TextField
+				{/* <TextField
 					name='message'
 					variant='outlined'
 					label='Message'
@@ -89,48 +104,67 @@ export default function Form({ currentId, setCurrentId }) {
 					onChange={e =>
 						setPostData({ ...postData, message: e.target.value })
 					}
-				/>
-				<TextField
-					name='tags'
-					variant='outlined'
-					label='Tags (coma separated)'
-					fullWidth
-					value={postData.tags}
-					onChange={e =>
-						setPostData({
-							...postData,
-							tags: e.target.value.split(','),
-						})
-					}
-				/>
+				/> */}
+
 				<div className={classes.fileInput}>
-					<FileBase
-						type='file'
-						multiple={false}
-						onDone={({ base64 }) =>
-							setPostData({ ...postData, selectedFile: base64 })
-						}
-					/>
+					<div>
+						<div style={{marginLeft: '8px'}}>
+							<FileBase
+								type='file'
+								multiple={false}
+								onDone={({ base64 }) =>
+									setPostData({
+										...postData,
+										selectedFile: base64,
+									})
+								}
+							/>
+						</div>
+						<TextField
+							name='tags'
+							label='Tags (seperate by coma)'
+							value={postData.tags}
+							onChange={e =>
+								setPostData({
+									...postData,
+									tags: e.target.value.split(','),
+								})
+							}
+							placeholder='monday,motivation'
+						/>
+					</div>
+
+					<Button
+						className={classes.buttonSubmit}
+						style={{ marginRight: '8px' }}
+						variant='contained'
+						color='secondary'
+						size='large'
+						type='submit'
+						//fullWidth
+					>
+						Post
+					</Button>
 				</div>
-				<Button
+				{/* <Button
 					className={classes.buttonSubmit}
 					variant='contained'
-					color='primary'
+					color='secondary'
 					size='large'
 					type='submit'
-					fullWidth
+					//fullWidth
 				>
-					Submit
-				</Button>
-				<Button
-					variant='contained'
+					Post
+				</Button> */}
+				{/* <Button
+					variant='outlined'
 					color='secondary'
 					size='small'
 					onClick={clear}
 					fullWidth
 				>
 					Clear
-				</Button>
+				</Button> */}
 			</form>
 		</Paper>
 	)

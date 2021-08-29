@@ -11,6 +11,7 @@ import {
 	COMMENT,
 	START_LOADING_1,
 	END_LOADING_1,
+	FETCH_BY_SEARCH_TAG
 } from '../constants/actionTypes'
 
 const reducer = (
@@ -44,6 +45,8 @@ const reducer = (
 				posts: state.posts.filter(post => post._id !== action.payload),
 			}
 		case FETCH_BY_SEARCH:
+			return { ...state, posts: action.payload.data }
+		case FETCH_BY_SEARCH_TAG:
 			return { ...state, posts: action.payload.data }
 		case FETCH_POST:
 			return { ...state, post: action.payload.post }

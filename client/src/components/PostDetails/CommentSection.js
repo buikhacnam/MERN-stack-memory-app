@@ -25,33 +25,32 @@ const CommentSection = ({ post }) => {
 		<div>
 			<div className={classes.commentsOuterContainer}>
 				{user?.result?.name && (
-					<div style={{ width: '70%' }}>
+					<div style={{ width: '100%' }}>
 						<Typography gutterBottom variant='h6'>
 							Write a comment
 						</Typography>
-						<TextField
-							fullWidth
-							rows={4}
-							variant='outlined'
-							label='Comment'
-							multiline
-							value={comment}
-							onChange={e => setComment(e.target.value)}
-						/>
-						<br />
-						<Button
-							style={{ marginTop: '10px' }}
-							fullWidth
-							disabled={!comment.length}
-							color='primary'
-							variant='contained'
-							onClick={handleComment}
-						>
-							Comment
-						</Button>
+							<TextField
+								fullWidth
+								rows={4}
+								variant='outlined'
+								label='Comment'
+								multiline
+								value={comment}
+								onChange={e => setComment(e.target.value)}
+							/>
+
+							<Button
+								style={{ marginTop: '10px', float: 'right' }}
+								disabled={!comment.length}
+								color='secondary'
+								variant='contained'
+								onClick={handleComment}
+							>
+								Comment
+							</Button>
 					</div>
 				)}
-				<div>
+				<div style={{marginTop: '50px'}}>
 					<Typography gutterBottom variant='h6'>
 						Comments
 					</Typography>
@@ -59,7 +58,7 @@ const CommentSection = ({ post }) => {
 						<Typography key={i} gutterBottom variant='subtitle1'>
 							<strong>
 								{c.split(': ')[0]}
-								{':'}
+								{' '}
 							</strong>
 							{c.split(':')[1]}
 						</Typography>

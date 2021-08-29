@@ -1,11 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { deepOrange } from '@material-ui/core/colors';
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: '56.25%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     backgroundBlendMode: 'darken',
+    marginBottom: '10px'
   },
   border: {
     border: 'solid',
@@ -17,9 +19,9 @@ export default makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    borderRadius: '15px',
     height: '100%',
     position: 'relative',
+    boxShadow: 'none'
   },
   overlay: {
     position: 'absolute',
@@ -30,7 +32,7 @@ export default makeStyles({
   overlay2: {
     position: 'absolute',
     top: '20px',
-    right: '20px',
+    right: '0px',
     color: 'white',
   },
   grid: {
@@ -39,7 +41,7 @@ export default makeStyles({
   details: {
     display: 'flex',
     justifyContent: 'space-between',
-    margin: '20px',
+    margin: '5px 20px',
   },
   title: {
     padding: '0 16px',
@@ -53,4 +55,8 @@ export default makeStyles({
     display: 'block',
     textAlign: 'initial',
   },
-});
+  purple: {
+    //color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: '#f50057',
+  },
+}));

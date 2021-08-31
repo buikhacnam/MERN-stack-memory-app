@@ -9,8 +9,9 @@ import {
 	Paper,
 	Typography,
 	Divider,
+	LinearProgress
 } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import ChipInput from 'material-ui-chip-input'
 
@@ -29,6 +30,7 @@ function useQuery() {
 	return new URLSearchParams(useLocation().search)
 }
 const Home = () => {
+	const {isLoading} = useSelector(state => state.posts)
 	const classes = useStyles()
 	const query = useQuery()
 	const page = query.get('page') || 1
@@ -103,10 +105,16 @@ const Home = () => {
 				>
 					<Grid item xs={12} sm={6} md={9}>
 						<Form
-							// currentId={currentId}
-							// setCurrentId={setCurrentId}
+							//currentId={currentId}
+							setCurrentId={setCurrentId}
+							open={open}
 						/>
-						<Posts setCurrentId={setCurrentId} handleClose={handleClose} handleClickOpen={handleClickOpen}/>
+						{!isLoading ? 
+						<Posts
+							setCurrentId={setCurrentId}
+							handleClose={handleClose}
+							handleClickOpen={handleClickOpen}
+						/> : <LinearProgress color='secondary'/>}
 						{!searchQuery && !tags.length && (
 							<Paper className={classes.pagination}>
 								<Pagination page={page} />

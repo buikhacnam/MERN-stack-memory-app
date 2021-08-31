@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
 	Avatar,
 	Button,
@@ -8,6 +8,7 @@ import {
 	Typography,
 	Container,
 } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 import { useHistory } from 'react-router-dom'
 import { GoogleLogin } from 'react-google-login'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -15,7 +16,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import Icon from './icon'
 import { signin, signup } from '../../actions/auth'
-import { AUTH } from '../../constants/actionTypes'
+import { AUTH, AUTH_CLEAR_ERRORS } from '../../constants/actionTypes'
 import useStyles from './styles'
 import Input from './Input'
 
@@ -34,18 +35,17 @@ export default function Auth() {
 	const [formData, setFormData] = useState(initialState)
 	const history = useHistory()
 	const dispatch = useDispatch()
-
+	const { errors } = useSelector(state => state.auth)
 	const handleSubmit = e => {
 		e.preventDefault()
-		if(isSignup) {
+		if (isSignup) {
 			dispatch(signup(formData, history))
 		} else {
 			dispatch(signin(formData, history))
 		}
-
 	}
 
-	const handleChange = (e) => {
+	const handleChange = e => {
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
@@ -56,6 +56,7 @@ export default function Auth() {
 
 	const switchMode = () => {
 		// setForm(initialState);
+		dispatch({type: AUTH_CLEAR_ERRORS})
 		setIsSignup(prevIsSignup => !prevIsSignup)
 		setShowPassword(false)
 	}
@@ -78,7 +79,6 @@ export default function Auth() {
 	return (
 		<Container component='main' maxWidth='xs'>
 			<Paper className={classes.paper}>
-				
 				<Typography component='h1' variant='h5'>
 					{isSignup ? 'Sign up' : 'Sign in'}
 				</Typography>
@@ -153,6 +153,11 @@ export default function Auth() {
 						onFailure={googleError}
 						cookiePolicy='single_host_origin'
 					/>
+					{errors && (
+						<Alert style={{marginBottom: '10px'}} severity='error'>
+							Something went wrong, please try again!
+						</Alert>
+					)}
 
 					<Grid container justify='flex-end'>
 						<Grid item>

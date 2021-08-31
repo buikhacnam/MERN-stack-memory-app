@@ -47,7 +47,7 @@ const Post = () => {
 	if (isLoading) {
 		return (
 			<Paper className={classes.loadingPaper}>
-				<CircularProgress size='7em' />
+				<CircularProgress size='7em' color='secondary'/>
 			</Paper>
 		)
 	}
@@ -100,7 +100,7 @@ const Post = () => {
 							style={{marginTop: '10px'}}
 							size='small'
 						>
-							<DeleteIcon fontSize='small' /> &nbsp; Delete
+							<DeleteIcon fontSize='small' /> &nbsp; Delete this post
 						</Button>
 					)}
 					<Divider style={{ margin: '20px 0' }} />

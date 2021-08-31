@@ -80,9 +80,9 @@ const Post = ({ post, setCurrentId, handleClose, handleClickOpen }) => {
 						<Avatar
 							className={classes.purple}
 							// alt={user?.result.name}
-							// src={user?.result.imageUrl}
+							 src={user?.result?.name === post.name? user?.result?.imageUrl : null}
 						>
-							N
+							{post.name[0].toUpperCase()}
 						</Avatar>
 						<Typography variant='h6' style={{ marginLeft: '10px' }}>
 							{post.name}

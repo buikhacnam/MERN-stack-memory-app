@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useStyles from './styles'
-import { Grid, CircularProgress, } from '@material-ui/core'
+import { Grid, LinearProgress, } from '@material-ui/core'
 import { useHistory, useLocation } from 'react-router-dom'
 import { getPosts, getPostsBySearchTag } from '../../actions/posts'
 
@@ -30,7 +30,7 @@ export default function Tags({ currentId, setCurrentId }) {
 	return (
 		<div>
 			{!posts?.length ? (
-				<CircularProgress />
+				<LinearProgress color='secondary'/>
 			) : (
 				<div className={classes.tags}>
 					{posts.map(post => {

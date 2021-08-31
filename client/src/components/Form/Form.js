@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
 import { useHistory } from 'react-router'
 
-export default function Form({ currentId, setCurrentId, handleClose }) {
+export default function Form({ currentId, setCurrentId, handleClose, open }) {
 	const [postData, setPostData] = useState({
 		title: '',
 		message: '',
@@ -36,6 +36,10 @@ export default function Form({ currentId, setCurrentId, handleClose }) {
 	useEffect(() => {
 		if (post) setPostData(post)
 	}, [post])
+
+	useEffect(() => {
+		
+	}, [open])
 
 	const handleSubmit = e => {
 		e.preventDefault()

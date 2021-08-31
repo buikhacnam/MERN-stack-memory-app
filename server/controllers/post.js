@@ -55,7 +55,6 @@ export const getPostsBySearch = async (req, res, next) => {
 
 export const getPostsBySearchTag = async (req, res, next) => {
 	const { tags } = req.query
-	console.log('111111111111111', tags)
 	try {
 		const posts = await PostMessage.find({
 			$or: [ 

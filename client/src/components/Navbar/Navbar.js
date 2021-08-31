@@ -26,17 +26,6 @@ const Navbar = () => {
 		setUser(null)
 	}
 
-	const [open, setOpen] = React.useState(false)
-	const { isLoading } = useSelector(state => state.posts)
-
-	const handleOpen = () => {
-		setOpen(true)
-	}
-
-	const handleClose = () => {
-		setOpen(false)
-	}
-
 	useEffect(() => {
 		const token = user?.token
 		if (token) {
@@ -47,12 +36,6 @@ const Navbar = () => {
 		}
 		setUser(JSON.parse(localStorage.getItem('profile')))
 	}, [location])
-
-	useEffect(() => {
-		if (!isLoading && open) {
-			//handleClose()
-		}
-	}, [isLoading])
 
 	return (
 		<AppBar className={classes.appBar} position='static' color='inherit'>
@@ -77,13 +60,6 @@ const Navbar = () => {
 			<Toolbar className={classes.toolbar}>
 				{user?.result ? (
 					<div className={classes.profile}>
-						{/* <IconButton
-							aria-label='search'
-							color='inherit'
-							onClick={handleOpen}
-						>
-							<SearchIcon />
-						</IconButton> */}
 						<Avatar
 							className={classes.purple}
 							alt={user?.result.name}

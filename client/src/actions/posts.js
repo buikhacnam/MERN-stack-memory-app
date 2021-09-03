@@ -12,7 +12,8 @@ import {
 	END_LOADING_1,
 	FETCH_POST,
 	COMMENT,
-	FETCH_BY_SEARCH_TAG
+	FETCH_BY_SEARCH_TAG,
+	CREATE_POST_ERROR
 } from '../constants/actionTypes'
 
 //Action creators
@@ -80,6 +81,7 @@ export const createPost = (post, history) => {
 			history.push('/posts/' + data._id)
 			dispatch({ type: CREATE, payload: data })
 		} catch (error) {
+			dispatch({ type: CREATE_POST_ERROR })
 			console.log(error)
 		}
 	}
@@ -93,6 +95,7 @@ export const updatePost = (id, post) => {
 			dispatch({ type: UPDATE, payload: data })
 			dispatch({ type: END_LOADING_1 })
 		} catch (error) {
+			dispatch({ type: CREATE_POST_ERROR })
 			console.log(error)
 		}
 	}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from '@material-ui/core'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect, HashRouter } from 'react-router-dom'
 
 import Home from './components/Home/Home'
 import Navbar from './components/Navbar/Navbar'
@@ -10,7 +10,7 @@ import PostDetails from './components/PostDetails/PostDetails'
 const App = () => {
 	const user = JSON.parse(localStorage.getItem('profile'))
 	return (
-		<BrowserRouter>
+		<HashRouter>
 				<Navbar />
 
 			<Container>
@@ -27,7 +27,7 @@ const App = () => {
 					<Route path='/auth' exact component={Auth} />
 				</Switch>
 			</Container>
-		</BrowserRouter>
+		</HashRouter>
 	)
 }
 

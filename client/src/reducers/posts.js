@@ -11,11 +11,18 @@ import {
 	COMMENT,
 	START_LOADING_1,
 	END_LOADING_1,
-	FETCH_BY_SEARCH_TAG
+	FETCH_BY_SEARCH_TAG,
+	CREATE_POST_ERROR,
+	CREATE_POST_CLEAR_ERRORS
 } from '../constants/actionTypes'
 
 const reducer = (
-	state = { isLoading: true, isLoading1: false, posts: [] },
+	state = {
+		isLoading: true,
+		isLoading1: false,
+		posts: [],
+		postCreatedError: false,
+	},
 	action
 ) => {
 	switch (action.type) {
@@ -27,11 +34,16 @@ const reducer = (
 				numberOfPages: action.payload.numberOfPages,
 			}
 		case CREATE:
-			return { ...state, posts: [action.payload, ...state.posts] }
+			return {
+				...state,
+				postCreatedError: false,
+				posts: [action.payload, ...state.posts],
+			}
 		case UPDATE:
 		case LIKE:
 			return {
 				...state,
+				postCreatedError: false,
 				posts: state.posts.map(post => {
 					if (post._id === action.payload._id) {
 						post = action.payload
@@ -68,6 +80,10 @@ const reducer = (
 			return { ...state, isLoading1: true }
 		case END_LOADING_1:
 			return { ...state, isLoading1: false }
+		case CREATE_POST_ERROR:
+			return { ...state, postCreatedError: true }
+		case CREATE_POST_CLEAR_ERRORS: 
+			return { ...state, postCreatedError: false }
 		default:
 			return state
 	}

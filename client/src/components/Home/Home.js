@@ -3,18 +3,15 @@ import {
 	Container,
 	Grow,
 	Grid,
-	AppBar,
-	TextField,
-	Button,
 	Paper,
 	Typography,
 	Divider,
-	LinearProgress
+	LinearProgress,
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
-import ChipInput from 'material-ui-chip-input'
-
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 import { getPosts, getPostsBySearch } from '../../actions/posts'
 import Posts from '../Posts/Posts'
 import Form from '../Form/Form'
@@ -25,12 +22,16 @@ import useStyles from './styles'
 import Tags from '../Tags/Tags'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
+import {CREATE_POST_CLEAR_ERRORS} from '../../constants/actionTypes'
 
+function Alert(props) {
+	return <MuiAlert elevation={6} variant='filled' {...props} />
+}
 function useQuery() {
 	return new URLSearchParams(useLocation().search)
 }
 const Home = () => {
-	const {isLoading} = useSelector(state => state.posts)
+	const { isLoading, postCreatedError } = useSelector(state => state.posts)
 	const classes = useStyles()
 	const query = useQuery()
 	const page = query.get('page') || 1
@@ -52,6 +53,31 @@ const Home = () => {
 	const handleClose = () => {
 		setOpen(false)
 	}
+
+
+	const [openAlert, setOpenAlert] = React.useState(false);
+
+  const handleClickAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
+  useEffect(() => {
+	  console.log('post createde')
+	if (postCreatedError) {
+		console.log('post createde error')
+
+	  handleClickAlert();
+	  dispatch({type: CREATE_POST_CLEAR_ERRORS})
+	}
+  }, [postCreatedError])
 	const searchPost = () => {
 		if (search.trim() || tags) {
 			dispatch(getPostsBySearch({ search, tags: tags.join(',') }))
@@ -65,24 +91,13 @@ const Home = () => {
 		}
 	}
 
-	const handleKeyPress = e => {
-		if (e.keyCode === 13) {
-			searchPost()
-		}
-	}
-
-	const handleAddChip = tag => setTags([...tags, tag])
-
-	const handleDeleteChip = chipToDelete =>
-		setTags(tags.filter(tag => tag !== chipToDelete))
-
 	useEffect(() => {
 		dispatch(getPosts(page))
 	}, [dispatch])
 
 	return (
 		<Grow in>
-			<Container maxWidth='xl'>
+			<Container maxWidth='md'>
 				<Dialog
 					open={open}
 					onClose={handleClose}
@@ -103,25 +118,35 @@ const Home = () => {
 					spacing={3}
 					className={classes.gridContainer}
 				>
-					<Grid item xs={12} sm={6} md={9}>
+					<Grid item xs={12} sm={9} md={9}>
 						<Form
 							//currentId={currentId}
 							setCurrentId={setCurrentId}
 							open={open}
 						/>
-						{!isLoading ? 
-						<Posts
-							setCurrentId={setCurrentId}
-							handleClose={handleClose}
-							handleClickOpen={handleClickOpen}
-						/> : <LinearProgress color='secondary'/>}
+						{!isLoading ? (
+							<Posts
+								setCurrentId={setCurrentId}
+								handleClose={handleClose}
+								handleClickOpen={handleClickOpen}
+							/>
+						) : (
+							<LinearProgress color='secondary' />
+						)}
 						{!searchQuery && !tags.length && (
 							<Paper className={classes.pagination}>
 								<Pagination page={page} />
 							</Paper>
 						)}
 					</Grid>
-					<Grid item xs={12} sm={6} md={3} className={classes.tags}>
+					<Grid
+						item
+						xs={9}
+						sm={3}
+						md={3}
+						className={classes.tags}
+						style={{ width: '100%' }}
+					>
 						<div style={{ background: 'white', padding: '20px' }}>
 							<Typography variant='h6' align='center'>
 								Trending Now
@@ -131,6 +156,16 @@ const Home = () => {
 						<Tags />
 					</Grid>
 				</Grid>
+
+				<Snackbar
+					open={openAlert}
+					autoHideDuration={3000}
+					onClose={handleCloseAlert}
+				>
+					<Alert onClose={handleCloseAlert} severity='error'>
+						Error, please try again!
+					</Alert>
+				</Snackbar>
 			</Container>
 		</Grow>
 	)

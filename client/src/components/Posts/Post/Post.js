@@ -165,8 +165,8 @@ const Post = ({ post, setCurrentId, handleClose, handleClickOpen }) => {
 				<Typography
 					className={classes.title}
 					gutterBottom
-					variant='h5'
-					component='h2'
+					variant='h6'
+					component='h4'
 				>
 					{post.title}
 				</Typography>

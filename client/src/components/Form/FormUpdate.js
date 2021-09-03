@@ -122,6 +122,8 @@ export default function FormUpdate({ currentId, setCurrentId, handleClose }) {
 									})
 								}
 							/>
+							<br />
+							<span>(less than 300kB)</span>
 						</div>
 						<TextField
 							name='tags'

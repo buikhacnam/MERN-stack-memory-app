@@ -123,6 +123,8 @@ export default function Form({ currentId, setCurrentId, handleClose, open }) {
 									})
 								}
 							/>
+							<br />
+							<span>(less than 300kB)</span>
 						</div>
 						<TextField
 							name='tags'
